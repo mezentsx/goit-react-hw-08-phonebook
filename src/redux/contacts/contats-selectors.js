@@ -1,7 +1,7 @@
-const getFilter = state => state.contacts.filter;
+export const getFilter = state => state.contacts.filter;
 const getContacts = state => state.contacts.items;
 
-const getVisibleContacts = state => {
+export const getVisibleContacts = state => {
   const filter = getFilter(state);
   const contacts = getContacts(state);
 
@@ -12,4 +12,3 @@ const getVisibleContacts = state => {
   );
 };
 
-export default { getFilter, getVisibleContacts };
