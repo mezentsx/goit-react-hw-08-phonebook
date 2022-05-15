@@ -1,5 +1,6 @@
 .title {
   margin-top: 30px;
+  margin-left: 30px;
   color: rgb(107, 3, 27);
   font-weight: 500;
   font-size: 30px;
@@ -7,6 +8,7 @@
 
 .text {
   margin-top: 30px;
+  margin-left: 30px;
   color: rgb(107, 3, 27);
   font-weight: 500;
   font-size: 20px;
