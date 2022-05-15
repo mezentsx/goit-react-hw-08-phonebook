@@ -1,0 +1,17 @@
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+}
+
+.title {
+    display: inline-block;
+    text-align: center;
+    margin-top: 30px;
+    
+    color: rgb(107, 3, 27);
+    font-weight: 500;
+    font-size: 54px;
+
+    text-decoration: none;
+}

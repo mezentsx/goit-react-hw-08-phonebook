@@ -1,32 +1,44 @@
-import ContactForm from './ContactForm';
-import Filter from './Filter';
-import ContactList from './ContactList';
+import { Routes, Route } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, Suspense, lazy } from 'react';
+import { authSelectors } from "redux/auth";
 import s from './App.module.css';
+import authOperations from 'redux/auth/auth-operations';
+import {PublicRoute} from './PublicRoute';
+import {PrivateRoute} from './PrivatRoute';
+import AppBar from './AppBar'
 
-import { useSelector, useDispatch } from 'react-redux';
-import { fetchContacts } from 'redux/contacts/contacts-operations';
-import { useEffect } from 'react';
+const HomeView = lazy(() => import('views/HomeView'))
+const RegisterView = lazy(() => import('views/RegisterView'))
+const LoginView = lazy(() => import('views/LoginView'))
+const PhonebookView = lazy(() => import('views/PhonebookView'))
+const NotFoundView =lazy(() => import('views/NotFoundView'))
 
 
 export const App = () => {
-  const contacts = useSelector(state => state.contacts.items);
+  const isFetchingCurrentUser = useSelector(authSelectors.getIsFetchingCurrentUser);
   const dispatch = useDispatch();
 
-  useEffect(() => {dispatch(fetchContacts())}, [dispatch]);
+  useEffect(() => { dispatch(authOperations.fetchCurrentUser()) }, [dispatch]);
 
   return (
-    <div className={s.container}>
-      <h1 className={s.title}>Phonebook</h1>
-      <ContactForm />
-      <h2 className={s.title}>Contacts</h2>
-      {contacts.length > 0 ? (
-        <>
-          <Filter />
-          <ContactList />
-        </>
-      ) : (
-        <p>You don't have any contacts</p>
-      )}
-    </div>
+    <>
+    {isFetchingCurrentUser ? (
+      <h1 className={s.title}>Loading...</h1>
+    ) : (
+      <>
+      <AppBar />
+      <Suspense fallback={<p className={s.text}>Loading...</p>}>
+        <Routes>
+          <Route index path="/" element={<PublicRoute><HomeView /></PublicRoute>} />
+          <Route path="/register" element={ <PublicRoute restricted ><RegisterView /></PublicRoute> } />
+          <Route path="/login" element={<PublicRoute restricted ><LoginView /></PublicRoute>} />
+          <Route path="/contacts" element={ <PrivateRoute><PhonebookView /></PrivateRoute>} />
+          <Route path="*" element={<NotFoundView/>}/>
+        </Routes>
+      </Suspense>
+      </>
+  )}
+  </>
   );
 };
