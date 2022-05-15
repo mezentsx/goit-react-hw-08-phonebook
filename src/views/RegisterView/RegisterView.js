@@ -39,7 +39,7 @@ export default function RegisterView(){
         <div className={s.container}>
           <h1 className={s.title}>Create your account</h1>
     
-          <form  onSubmit={handleSubmit} className={s.form} autoComplete="off">
+          <form  onSubmit={handleSubmit} className={s.form}>
             <label className={s.label}>
               Name
               <input className={s.input}
